@@ -16,15 +16,34 @@
         
         <div class="book-meta">
             <p><strong>✍️ Автор:</strong> 
-                <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
-                    {% if book.author.avatar_url %}
-                        <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
-                             style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
-                    {% endif %}
-                    {{ book.author.name }}
-                </a>
+                {% if book.author %}
+                    <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
+                        {% if book.author.avatar_url %}
+                            <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
+                                 style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
+                        {% endif %}
+                        {{ book.author.name }}
+                    </a>
+                {% else %}
+                    <span style="color: #888;">Не указан</span>
+                {% endif %}
             </p>
             <p><strong>📅 Год издания:</strong> {{ book.year }}</p>
+            {% if book.pages %}
+                <p><strong>📄 Страниц:</strong> {{ book.pages }}</p>
+            {% endif %}
+            
+            <!-- Жанры книги -->
+            {% if book.genres.all %}
+                <p><strong>🏷️ Жанры:</strong> 
+                    {% for genre in book.genres.all %}
+                        <a href="{% url 'genre_detail' genre.id %}" class="genre-tag">
+                            {{ genre.name }}
+                        </a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+            
             <p><strong>📝 Добавлено:</strong> {{ book.created_at|date:"d.m.Y" }}</p>
         </div>
         
@@ -36,11 +55,66 @@
         {% endif %}
         
         <div class="book-actions">
-            <button class="btn btn-read">📖 Начать читать</button>
+            {% if book.file_url %}
+                <a href="{{ book.file_url }}" target="_blank" class="btn btn-read">📖 Читать онлайн</a>
+            {% else %}
+                <button class="btn btn-read" disabled>📖 Читать (файл не доступен)</button>
+            {% endif %}
             <a href="{% url 'book_list' %}">
                 <button class="btn btn-back">← Назад к списку</button>
             </a>
         </div>
     </div>
+</div>
+
+<!-- Отзывы -->
+<div class="reviews-section">
+    <h3 class="section-title">💬 Отзывы ({{ reviews|length }})</h3>
+    
+    {% if reviews %}
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <span class="review-user">{{ review.user.username }}</span>
+                <span class="review-rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <div class="review-text">{{ review.text|linebreaks }}</div>
+            <div class="review-date">{{ review.created_at|date:"d.m.Y H:i" }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-data">Пока нет отзывов</div>
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+    <div class="review-form">
+        <h4>Оставить отзыв</h4>
+        <form method="post" action="{% url 'add_review' book.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Оценка:</label>
+                <select name="rating" required>
+                    <option value="">Выберите оценку</option>
+                    <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                    <option value="4">4 ⭐⭐⭐⭐</option>
+                    <option value="3">3 ⭐⭐⭐</option>
+                    <option value="2">2 ⭐⭐</option>
+                    <option value="1">1 ⭐</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Текст отзыва:</label>
+                <textarea name="text" placeholder="Напишите ваш отзыв..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-read">Отправить отзыв</button>
+        </form>
+    </div>
+    {% else %}
+        <p>Чтобы оставить отзыв, <a href="{% url 'admin:login' %}">войдите в систему</a></p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -71,18 +71,44 @@
             </div>
             
             <h3 class="book-title">{{ book.title }}</h3>
-            <p class="book-meta">✍️ Автор: 
-                <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
-                    {% if book.author.avatar_url %}
-                        <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
-                             style="width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 5px;">
-                    {% endif %}
-                    {{ book.author.name }}
-                </a>
+            
+            <!-- Автор с защитой от ошибок -->
+            <p class="book-meta">
+                ✍️ Автор: 
+                {% if book.author and book.author.id %}
+                    <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
+                        {% if book.author.avatar_url %}
+                            <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
+                                 style="width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 5px;">
+                        {% endif %}
+                        {{ book.author.name }}
+                    </a>
+                {% else %}
+                    <span style="color: #888;">Не указан</span>
+                {% endif %}
             </p>
+            
             <p class="book-meta">📅 Год: {{ book.year }}</p>
+            
+            <!-- Жанры в карточке книги -->
+            {% if book.genres.all %}
+                <p class="book-meta">
+                    🏷️ 
+                    {% for genre in book.genres.all|slice:":2" %}
+                        <a href="{% url 'genre_detail' genre.id %}" style="color: #ffab91; text-decoration: none;">
+                            {{ genre.name }}
+                        </a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if book.genres.all|length > 2 %}...{% endif %}
+                </p>
+            {% endif %}
+            
             {% if book.description %}
                 <p class="book-meta">{{ book.description|truncatewords:15 }}</p>
+            {% endif %}
+            
+            {% if book.pages %}
+                <p class="book-meta">📄 Страниц: {{ book.pages }}</p>
             {% endif %}
             
             <a href="{% url 'book_detail' book.id %}">
@@ -96,6 +122,8 @@
         📚 Книги не найдены
         {% if search_query or year_filter %}
             <br><small>Попробуйте изменить параметры поиска</small>
+        {% else %}
+            <br><small>В библиотеке пока нет книг</small>
         {% endif %}
     </div>
 {% endif %}

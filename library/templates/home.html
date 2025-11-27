@@ -1,0 +1,109 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Главная - Библиотека{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>Добро пожаловать в библиотеку!</h1>
+    <p>Читайте лучшие книги онлайн бесплатно</p>
+</div>
+
+{% if featured_books %}
+<section class="featured-books">
+    <h2 class="section-title">⭐ Рекомендуемые книги</h2>
+    <div class="books-grid">
+        {% for book in featured_books %}
+        <div class="book-card">
+            <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                 {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                {% if not book.cover_url %}📖{% endif %}
+            </div>
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="book-meta">{{ book.author.name }}</p>
+            
+            <!-- Жанры на главной -->
+            {% if book.genres.all %}
+                <p class="book-meta">
+                    🏷️ 
+                    {% for genre in book.genres.all|slice:":2" %}
+                        <span style="color: #ffab91;">{{ genre.name }}</span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+            
+            <a href="{% url 'book_detail' book.id %}" class="btn btn-read">Читать</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if recent_books %}
+<section class="recent-books">
+    <h2 class="section-title">🆕 Новые поступления</h2>
+    <div class="books-grid">
+        {% for book in recent_books %}
+        <div class="book-card">
+            <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                 {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                {% if not book.cover_url %}📖{% endif %}
+            </div>
+            <h3 class="book-title">{{ book.title }}</h3>
+           <p class="book-meta">
+    {% if book.author %}
+        {{ book.author.name }}
+    {% else %}
+        <span style="color: #888;">Автор не указан</span>
+    {% endif %}
+</p>
+            
+            <!-- Жанры на главной -->
+            {% if book.genres.all %}
+                <p class="book-meta">
+                    🏷️ 
+                    {% for genre in book.genres.all|slice:":2" %}
+                        <span style="color: #ffab91;">{{ genre.name }}</span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+            
+            <a href="{% url 'book_detail' book.id %}" class="btn btn-read">Читать</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Популярные жанры на главной -->
+<section class="popular-genres">
+    <h2 class="section-title">🔥 Популярные жанры</h2>
+    <div class="genres-grid">
+        {% for genre in popular_genres %}
+        <div class="genre-card">
+            <h3>{{ genre.name }}</h3>
+            {% if genre.description %}
+                <p>{{ genre.description|truncatewords:10 }}</p>
+            {% endif %}
+            <div class="book-count">📚 {{ genre.book_count }} книг</div>
+            <a href="{% url 'genre_detail' genre.id %}" class="btn btn-view">Смотреть книги</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="stats">
+    <div class="stat-item">
+        <h3>📚 {{ total_books }}</h3>
+        <p>Всего книг</p>
+    </div>
+    <div class="stat-item">
+        <h3>✍️ {{ total_authors }}</h3>
+        <p>Авторов</p>
+    </div>
+    <div class="stat-item">
+        <h3>🏷️ {{ total_genres }}</h3>
+        <p>Жанров</p>
+    </div>
+</div>
+{% endblock %}

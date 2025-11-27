@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Жанры - Библиотека{% endblock %}
+
+{% block content %}
+<h2 class="section-title">🏷️ Все жанры</h2>
+
+<div class="genres-grid">
+    {% for genre in genres %}
+    <div class="genre-card">
+        <h3>{{ genre.name }}</h3>
+        {% if genre.description %}
+            <p>{{ genre.description|truncatewords:15 }}</p>
+        {% endif %}
+        <div class="book-count">📚 {{ genre.book_count }} книг</div>
+        <a href="{% url 'genre_detail' genre.id %}" class="btn btn-view">Смотреть книги</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

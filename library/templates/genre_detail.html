@@ -1,0 +1,77 @@
+<!-- genre_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ genre.name }} - Библиотека{% endblock %}
+
+{% block content %}
+<div class="genre-header">
+    <h1 class="section-title">🏷️ {{ genre.name }}</h1>
+    {% if genre.description %}
+        <p class="genre-description">{{ genre.description }}</p>
+    {% endif %}
+    <div class="books-count">📚 Книг в жанре: {{ books|length }}</div>
+</div>
+
+{% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                 {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                {% if not book.cover_url %}
+                    📖 Нет обложки
+                {% endif %}
+            </div>
+            
+            <h3 class="book-title">{{ book.title }}</h3>
+            
+            <p class="book-meta">
+                ✍️ Автор: 
+                {% if book.author %}
+                    <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
+                        {% if book.author.avatar_url %}
+                            <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
+                                 style="width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 5px;">
+                        {% endif %}
+                        {{ book.author.name }}
+                    </a>
+                {% else %}
+                    <span style="color: #888;">Не указан</span>
+                {% endif %}
+            </p>
+            
+            <p class="book-meta">📅 Год: {{ book.year }}</p>
+            
+            {% if book.genres.all %}
+                <p class="book-meta">
+                    🏷️ 
+                    {% for genre in book.genres.all|slice:":2" %}
+                        <a href="{% url 'genre_detail' genre.id %}" style="color: #ffab91; text-decoration: none;">
+                            {{ genre.name }}
+                        </a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if book.genres.all|length > 2 %}...{% endif %}
+                </p>
+            {% endif %}
+            
+            {% if book.description %}
+                <p class="book-meta">{{ book.description|truncatewords:15 }}</p>
+            {% endif %}
+            
+            <a href="{% url 'book_detail' book.id %}">
+                <button class="btn btn-read">📖 Читать</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-data">
+        📚 В этом жанре пока нет книг
+        <br><small>Попробуйте посмотреть другие жанры</small>
+    </div>
+{% endif %}
+
+<div class="text-center mt-30">
+    <a href="{% url 'genre_list' %}" class="btn btn-back">← Назад к списку жанров</a>
+</div>
+{% endblock %}
