@@ -196,7 +196,9 @@
                     {% if book.description %}
                         <p>{{ book.description|truncatewords:15 }}</p>
                     {% endif %}
-                    <button class="btn btn-read">📖 Читать</button>
+                    <a href="{% url 'book_detail' book.id %}">
+    <button class="btn btn-read">📖 Читать</button>
+</a>
                 </div>
                 {% endfor %}
             </div>
