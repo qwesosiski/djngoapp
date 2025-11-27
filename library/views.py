@@ -1,3 +1,4 @@
+# views.py
 from django.shortcuts import render
 from django.db.models import Q
 from .models import Book
@@ -9,7 +10,7 @@ def book_list(request):
     if search_query:
         books = books.filter(
             Q(title__icontains=search_query) |
-            Q(author__icontains=search_query) |
+            Q(author__name__icontains=search_query) |
             Q(description__icontains=search_query)
         )
     

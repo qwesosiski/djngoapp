@@ -4,61 +4,180 @@
 <head>
     <title>Библиотека</title>
     <style>
-        body { margin:0; padding:0; background:#f5f5f5; font-family:Arial; }
-        .header { background:#8B4513; padding:15px; color:white; }
-        .container { width:90%; margin:0 auto; }
-        .nav { background:#2F4F4F; padding:10px; }
-        .nav a { color:white; text-decoration:none; margin-right:20px; }
-        .main { padding:20px 0; }
-        .books { display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; }
-        .book { background:white; padding:15px; border-radius:5px; text-align:center; }
+        body { 
+            margin:0; 
+            padding:0; 
+            background:#1a1a1a; 
+            color:#e0e0e0; 
+            font-family:Arial, sans-serif;
+            line-height: 1.5;
+        }
+        .header { 
+            background:#5d4037; 
+            padding:20px 0; 
+            color:white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .container { 
+            width:90%; 
+            max-width: 1200px;
+            margin:0 auto; 
+        }
+        .nav { 
+            background:#2d2d2d; 
+            padding:12px 0;
+            border-bottom: 1px solid #444;
+        }
+        .nav a { 
+            color:#e0e0e0; 
+            text-decoration:none; 
+            margin-right:25px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: #444;
+        }
+        .main { 
+            padding:30px 0; 
+            min-height: 70vh;
+        }
+        .books { 
+            display:grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap:25px; 
+        }
+        .book { 
+            background:#2d2d2d; 
+            padding:20px; 
+            border-radius:8px;
+            text-align:center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #444;
+        }
+        .book:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
         .book-cover { 
             height:200px; 
-            background:#ddd; 
-            margin-bottom:10px;
+            background:#3d3d3d; 
+            margin-bottom:15px;
             background-size: cover;
             background-position: center;
+            border-radius: 4px;
+            border: 1px solid #555;
         }
         .no-cover { 
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: #888;
             font-size: 14px;
         }
-        .footer { background:#2F4F4F; color:white; padding:20px 0; margin-top:30px; text-align:center; }
-        .btn { padding:5px 10px; border:none; border-radius:3px; cursor:pointer; }
-        .btn-read { background:#8B4513; color:white; }
-        .search-form { margin:15px 0; }
-        .search-form input { padding:8px; width:300px; }
-        .search-form button { padding:8px 15px; background:#2F4F4F; color:white; border:none; }
+        .book h3 {
+            color: #ffab91;
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        .book p {
+            margin: 8px 0;
+            color: #b0b0b0;
+        }
+        .footer { 
+            background:#2d2d2d; 
+            color:#b0b0b0; 
+            padding:25px 0; 
+            margin-top:50px; 
+            text-align:center;
+            border-top: 1px solid #444;
+        }
+        .btn { 
+            padding:8px 16px; 
+            border:none; 
+            border-radius:4px; 
+            cursor:pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-read { 
+            background:#5d4037; 
+            color:white;
+            margin-top: 10px;
+        }
+        .btn-read:hover {
+            background:#6d4c41;
+        }
+        .search-form { 
+            margin:20px 0; 
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .search-form input { 
+            padding:10px 15px; 
+            width:300px; 
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #2d2d2d;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        .search-form input:focus {
+            outline: none;
+            border-color: #5d4037;
+        }
+        .search-form button { 
+            padding:10px 20px; 
+            background:#5d4037; 
+            color:white; 
+            border:none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-form button:hover {
+            background:#6d4c41;
+        }
+        .search-form a {
+            color: #ffab91;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        h2 {
+            color: #ffab91;
+            border-bottom: 2px solid #5d4037;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="container">
-            <h1>Библиотека</h1>
+            <h1>📚 Библиотека</h1>
         </div>
     </div>
     
     <div class="nav">
         <div class="container">
-            <a href="/">Главная</a>
-            <a href="/books/">Все книги</a>
-            <a href="/admin/">Админка</a>
+            <a href="/">🏠 Главная</a>
+            <a href="/books/">📖 Все книги</a>
+            <a href="/admin/">⚙️ Админка</a>
         </div>
     </div>
     
     <div class="main container">
         <form method="get" class="search-form">
-            <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск книг...">
-            <button type="submit">Найти</button>
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск книг или авторов...">
+            <button type="submit">🔍 Найти</button>
             {% if search_query %}
-                <a href="{% url 'book_list' %}">Сбросить</a>
+                <a href="{% url 'book_list' %}">❌ Сбросить</a>
             {% endif %}
         </form>
         
-        <h2>Книги ({{ books|length }})</h2>
+        <h2>📚 Книги ({{ books|length }})</h2>
         
         {% if books %}
             <div class="books">
@@ -67,22 +186,22 @@
                     <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
                          {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
                         {% if not book.cover_url %}
-                            Нет обложки
+                            📖 Нет обложки
                         {% endif %}
                     </div>
                     
                     <h3>{{ book.title }}</h3>
-                    <p>Автор: {{ book.author }}</p>
-                    <p>Год: {{ book.year }}</p>
+                    <p>✍️ Автор: {{ book.author.name }}</p>
+                    <p>📅 Год: {{ book.year }}</p>
                     {% if book.description %}
                         <p>{{ book.description|truncatewords:15 }}</p>
                     {% endif %}
-                    <button class="btn btn-read">Читать</button>
+                    <button class="btn btn-read">📖 Читать</button>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p>Книги не найдены</p>
+            <p style="text-align: center; color: #888; font-size: 18px;">📚 Книги не найдены</p>
         {% endif %}
     </div>
     
@@ -92,3 +211,4 @@
         </div>
     </div>
 </body>
+</html>
