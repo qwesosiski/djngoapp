@@ -4,6 +4,7 @@ from django.db import models
 class Author(models.Model):
     name = models.CharField(max_length=100, verbose_name="Имя автора")
     bio = models.TextField(blank=True, verbose_name="Биография")
+    avatar_url = models.URLField(blank=True, verbose_name="Ссылка на аватар")
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

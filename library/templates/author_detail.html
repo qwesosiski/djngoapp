@@ -43,13 +43,36 @@
             padding:30px 0; 
             min-height: 70vh;
         }
-        .author-info {
+        .author-header {
+            display: flex;
+            gap: 30px;
+            align-items: center;
             background:#2d2d2d;
             padding: 30px;
             border-radius: 8px;
             border: 1px solid #444;
             margin-bottom: 30px;
+        }
+        .author-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #3d3d3d;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #5d4037;
+            flex-shrink: 0;
+        }
+        .no-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 14px;
             text-align: center;
+        }
+        .author-info {
+            flex: 1;
         }
         .author-name {
             color: #ffab91;
@@ -60,13 +83,15 @@
             color: #b0b0b0;
             font-size: 1.1em;
             line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
         }
         .books-count {
             color: #ffab91;
             font-size: 1.2em;
             margin: 20px 0;
+            background: #3d3d3d;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: inline-block;
         }
         .books-grid { 
             display:grid; 
@@ -151,6 +176,19 @@
             color: #888;
             font-size: 18px;
             padding: 40px;
+            background: #2d2d2d;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        @media (max-width: 768px) {
+            .author-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .author-avatar {
+                width: 150px;
+                height: 150px;
+            }
         }
     </style>
 </head>
@@ -170,17 +208,26 @@
     </div>
     
     <div class="main container">
-        <div class="author-info">
-            <h1 class="author-name">✍️ {{ author.name }}</h1>
+        <div class="author-header">
+            <div class="author-avatar {% if not author.avatar_url %}no-avatar{% endif %}" 
+                 {% if author.avatar_url %}style="background-image: url('{{ author.avatar_url }}')"{% endif %}>
+                {% if not author.avatar_url %}
+                    👤<br>Нет аватара
+                {% endif %}
+            </div>
             
-            {% if author.bio %}
-                <div class="author-bio">
-                    {{ author.bio|linebreaks }}
+            <div class="author-info">
+                <h1 class="author-name">{{ author.name }}</h1>
+                
+                {% if author.bio %}
+                    <div class="author-bio">
+                        {{ author.bio|linebreaks }}
+                    </div>
+                {% endif %}
+                
+                <div class="books-count">
+                    📚 Книг в библиотеке: {{ books|length }}
                 </div>
-            {% endif %}
-            
-            <div class="books-count">
-                📚 Книг в библиотеке: {{ books|length }}
             </div>
         </div>
 

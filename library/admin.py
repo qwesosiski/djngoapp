@@ -7,6 +7,15 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ['name', 'created_at']
     search_fields = ['name']
     list_filter = ['created_at']
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('name', 'bio')
+        }),
+        ('Аватар', {
+            'fields': ('avatar_url',),
+            'description': 'Вставьте ссылку на изображение аватара автора'
+        }),
+    )
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
