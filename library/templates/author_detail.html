@@ -1,8 +1,8 @@
-<!-- books.html -->
+<!-- author_detail.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Библиотека</title>
+    <title>{{ author.name }}</title>
     <style>
         body { 
             margin:0; 
@@ -43,7 +43,32 @@
             padding:30px 0; 
             min-height: 70vh;
         }
-        .books { 
+        .author-info {
+            background:#2d2d2d;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .author-name {
+            color: #ffab91;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .author-bio {
+            color: #b0b0b0;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .books-count {
+            color: #ffab91;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .books-grid { 
             display:grid; 
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap:25px; 
@@ -85,14 +110,6 @@
             margin: 8px 0;
             color: #b0b0b0;
         }
-        .footer { 
-            background:#2d2d2d; 
-            color:#b0b0b0; 
-            padding:25px 0; 
-            margin-top:50px; 
-            text-align:center;
-            border-top: 1px solid #444;
-        }
         .btn { 
             padding:8px 16px; 
             border:none; 
@@ -109,47 +126,31 @@
         .btn-read:hover {
             background:#6d4c41;
         }
-        .search-form { 
-            margin:20px 0; 
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .search-form input { 
-            padding:10px 15px; 
-            width:300px; 
-            border: 1px solid #444;
-            border-radius: 4px;
-            background: #2d2d2d;
-            color: #e0e0e0;
-            font-size: 14px;
-        }
-        .search-form input:focus {
-            outline: none;
-            border-color: #5d4037;
-        }
-        .search-form button { 
-            padding:10px 20px; 
-            background:#5d4037; 
-            color:white; 
-            border:none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .search-form button:hover {
-            background:#6d4c41;
-        }
-        .search-form a {
-            color: #ffab91;
+        .btn-back {
+            background:#444;
+            color:white;
+            padding: 10px 20px;
             text-decoration: none;
-            margin-left: 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 20px;
         }
-        h2 {
-            color: #ffab91;
-            border-bottom: 2px solid #5d4037;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .btn-back:hover {
+            background:#555;
+        }
+        .footer { 
+            background:#2d2d2d; 
+            color:#b0b0b0; 
+            padding:25px 0; 
+            margin-top:50px; 
+            text-align:center;
+            border-top: 1px solid #444;
+        }
+        .no-books {
+            text-align: center;
+            color: #888;
+            font-size: 18px;
+            padding: 40px;
         }
     </style>
 </head>
@@ -169,18 +170,24 @@
     </div>
     
     <div class="main container">
-        <form method="get" class="search-form">
-            <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск книг или авторов...">
-            <button type="submit">🔍 Найти</button>
-            {% if search_query %}
-                <a href="{% url 'book_list' %}">❌ Сбросить</a>
+        <div class="author-info">
+            <h1 class="author-name">✍️ {{ author.name }}</h1>
+            
+            {% if author.bio %}
+                <div class="author-bio">
+                    {{ author.bio|linebreaks }}
+                </div>
             {% endif %}
-        </form>
-        
-        <h2>📚 Книги ({{ books|length }})</h2>
+            
+            <div class="books-count">
+                📚 Книг в библиотеке: {{ books|length }}
+            </div>
+        </div>
+
+        <h2>📖 Книги автора</h2>
         
         {% if books %}
-            <div class="books">
+            <div class="books-grid">
                 {% for book in books %}
                 <div class="book">
                     <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
@@ -191,20 +198,24 @@
                     </div>
                     
                     <h3>{{ book.title }}</h3>
-                    <p>✍️ Автор: <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">{{ book.author.name }}</a></p>
                     <p>📅 Год: {{ book.year }}</p>
                     {% if book.description %}
-                        <p>{{ book.description|truncatewords:15 }}</p>
+                        <p>{{ book.description|truncatewords:10 }}</p>
                     {% endif %}
+                    
                     <a href="{% url 'book_detail' book.id %}">
-    <button class="btn btn-read">📖 Читать</button>
-</a>
+                        <button class="btn btn-read">📖 Подробнее</button>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p style="text-align: center; color: #888; font-size: 18px;">📚 Книги не найдены</p>
+            <div class="no-books">
+                📚 У этого автора пока нет книг в библиотеке
+            </div>
         {% endif %}
+
+        <a href="{% url 'book_list' %}" class="btn-back">← Назад к списку книг</a>
     </div>
     
     <div class="footer">
