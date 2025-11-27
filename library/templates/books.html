@@ -1,0 +1,94 @@
+<!-- books.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Библиотека</title>
+    <style>
+        body { margin:0; padding:0; background:#f5f5f5; font-family:Arial; }
+        .header { background:#8B4513; padding:15px; color:white; }
+        .container { width:90%; margin:0 auto; }
+        .nav { background:#2F4F4F; padding:10px; }
+        .nav a { color:white; text-decoration:none; margin-right:20px; }
+        .main { padding:20px 0; }
+        .books { display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; }
+        .book { background:white; padding:15px; border-radius:5px; text-align:center; }
+        .book-cover { 
+            height:200px; 
+            background:#ddd; 
+            margin-bottom:10px;
+            background-size: cover;
+            background-position: center;
+        }
+        .no-cover { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .footer { background:#2F4F4F; color:white; padding:20px 0; margin-top:30px; text-align:center; }
+        .btn { padding:5px 10px; border:none; border-radius:3px; cursor:pointer; }
+        .btn-read { background:#8B4513; color:white; }
+        .search-form { margin:15px 0; }
+        .search-form input { padding:8px; width:300px; }
+        .search-form button { padding:8px 15px; background:#2F4F4F; color:white; border:none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Библиотека</h1>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <div class="container">
+            <a href="/">Главная</a>
+            <a href="/books/">Все книги</a>
+            <a href="/admin/">Админка</a>
+        </div>
+    </div>
+    
+    <div class="main container">
+        <form method="get" class="search-form">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск книг...">
+            <button type="submit">Найти</button>
+            {% if search_query %}
+                <a href="{% url 'book_list' %}">Сбросить</a>
+            {% endif %}
+        </form>
+        
+        <h2>Книги ({{ books|length }})</h2>
+        
+        {% if books %}
+            <div class="books">
+                {% for book in books %}
+                <div class="book">
+                    <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                         {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                        {% if not book.cover_url %}
+                            Нет обложки
+                        {% endif %}
+                    </div>
+                    
+                    <h3>{{ book.title }}</h3>
+                    <p>Автор: {{ book.author }}</p>
+                    <p>Год: {{ book.year }}</p>
+                    {% if book.description %}
+                        <p>{{ book.description|truncatewords:15 }}</p>
+                    {% endif %}
+                    <button class="btn btn-read">Читать</button>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Книги не найдены</p>
+        {% endif %}
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            Библиотека &copy; 2024
+        </div>
+    </div>
+</body>
