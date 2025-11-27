@@ -1,0 +1,477 @@
+/* static/css/style.css */
+
+/* Базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Шапка */
+.header {
+    background: #5d4037;
+    padding: 20px 0;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Навигация */
+.nav {
+    background: #2d2d2d;
+    padding: 12px 0;
+    border-bottom: 1px solid #444;
+}
+
+.nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    margin-right: 25px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+.nav a:hover {
+    background: #444;
+}
+
+/* Основной контент */
+.main {
+    padding: 30px 0;
+    min-height: 70vh;
+}
+
+/* Кнопки */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-read {
+    background: #5d4037;
+    color: white;
+    margin-top: 10px;
+}
+
+.btn-read:hover {
+    background: #6d4c41;
+}
+
+.btn-back {
+    background: #444;
+    color: white;
+    padding: 10px 20px;
+}
+
+.btn-back:hover {
+    background: #555;
+}
+
+.btn-view {
+    background: #5d4037;
+    color: white;
+    padding: 8px 16px;
+}
+
+.btn-view:hover {
+    background: #6d4c41;
+}
+
+/* Сетка книг */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.book-card {
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #444;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.book-cover {
+    height: 200px;
+    background: #3d3d3d;
+    margin-bottom: 15px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    border: 1px solid #555;
+}
+
+.no-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.book-title {
+    color: #ffab91;
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+.book-meta {
+    margin: 8px 0;
+    color: #b0b0b0;
+}
+
+/* Сетка авторов */
+.authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.author-card {
+    background: #2d2d2d;
+    padding: 25px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #444;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.author-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.author-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #3d3d3d;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #5d4037;
+    flex-shrink: 0;
+}
+
+.no-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 12px;
+    text-align: center;
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    color: #ffab91;
+    font-size: 1.4em;
+    margin-bottom: 8px;
+}
+
+.author-bio {
+    color: #b0b0b0;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.author-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9em;
+}
+
+.book-count {
+    color: #ffab91;
+    background: #3d3d3d;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Формы поиска и фильтров */
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-label {
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.filter-select,
+.search-form input {
+    padding: 10px 15px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #2d2d2d;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.search-form input {
+    width: 300px;
+}
+
+.filter-select {
+    width: 200px;
+}
+
+.filter-select:focus,
+.search-form input:focus {
+    outline: none;
+    border-color: #5d4037;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background: #5d4037;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    align-self: flex-end;
+    height: 42px;
+}
+
+.search-form button:hover {
+    background: #6d4c41;
+}
+
+.search-form a {
+    color: #ffab91;
+    text-decoration: none;
+    margin-left: 10px;
+    padding: 10px 15px;
+    background: #444;
+    border-radius: 4px;
+    transition: background 0.3s;
+    align-self: flex-end;
+    height: 42px;
+    display: flex;
+    align-items: center;
+}
+
+.search-form a:hover {
+    background: #555;
+}
+
+/* Информация о фильтрах */
+.filters-info {
+    margin: 15px 0;
+    padding: 10px 15px;
+    background: #3d3d3d;
+    border-radius: 4px;
+    border-left: 4px solid #5d4037;
+}
+
+.filters-info span {
+    color: #ffab91;
+    font-weight: bold;
+}
+
+/* Заголовки разделов */
+.section-title {
+    color: #ffab91;
+    border-bottom: 2px solid #5d4037;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Детальная страница книги */
+.book-detail {
+    background: #2d2d2d;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.book-detail-cover {
+    width: 300px;
+    height: 400px;
+    background: #3d3d3d;
+    margin: 0 auto 20px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    border: 1px solid #555;
+}
+
+.book-detail-title {
+    color: #ffab91;
+    font-size: 2em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.book-description {
+    background: #3d3d3d;
+    padding: 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+    text-align: left;
+    line-height: 1.6;
+}
+
+/* Детальная страница автора */
+.author-header {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    background: #2d2d2d;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    margin-bottom: 30px;
+}
+
+.author-detail-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #3d3d3d;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid #5d4037;
+    flex-shrink: 0;
+}
+
+.author-detail-name {
+    color: #ffab91;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.author-detail-bio {
+    color: #b0b0b0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.authors-count {
+    color: #ffab91;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    background: #3d3d3d;
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Сообщения об отсутствии данных */
+.no-data {
+    text-align: center;
+    color: #888;
+    font-size: 18px;
+    padding: 40px;
+    background: #2d2d2d;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+/* Подвал */
+.footer {
+    background: #2d2d2d;
+    color: #b0b0b0;
+    padding: 25px 0;
+    margin-top: 50px;
+    text-align: center;
+    border-top: 1px solid #444;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .author-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .author-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .author-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .author-detail-avatar {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-form input,
+    .filter-select {
+        width: 100%;
+    }
+    
+    .search-form button,
+    .search-form a {
+        align-self: stretch;
+        text-align: center;
+    }
+    
+    .nav a {
+        display: block;
+        margin: 5px 0;
+        text-align: center;
+    }
+}

@@ -1,68 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ book.title }}</title>
-    <style>
-        body { margin:0; padding:0; background:#1a1a1a; color:#e0e0e0; font-family:Arial; }
-        .header { background:#5d4037; padding:20px; color:white; }
-        .container { width:90%; margin:0 auto; }
-        .nav { background:#2d2d2d; padding:10px; }
-        .nav a { color:white; text-decoration:none; margin-right:20px; }
-        .main { padding:20px; }
-        .book-detail { background:#2d2d2d; padding:20px; border-radius:5px; }
-        .book-cover { height:300px; background:#3d3d3d; margin:10px 0; }
-        .footer { background:#2d2d2d; color:#b0b0b0; padding:20px; margin-top:20px; text-align:center; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="container">
-            <h1>Библиотека</h1>
-        </div>
-    </div>
-    
-    <div class="nav">
-        <div class="container">
-            <a href="/">Главная</a>
-            <a href="/books/">Все книги</a>
-             <a href="/authors/">✍️ Все авторы</a>
-        </div>
-    </div>
-    
-    <div class="main container">
-        <div class="book-detail">
-            <h1>{{ book.title }}</h1>
-            <p><strong>✍️ Автор:</strong> 
-    <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
-        {% if book.author.avatar_url %}
-            <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
-                 style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - Библиотека{% endblock %}
+
+{% block content %}
+<div class="book-detail">
+    <div class="book-cover book-detail-cover {% if not book.cover_url %}no-cover{% endif %}" 
+         {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+        {% if not book.cover_url %}
+            📖 Нет обложки
         {% endif %}
-        {{ book.author.name }}
-    </a>
-</p>
-            <p>Год: {{ book.year }}</p>
-            
-            <div class="book-cover">
-                {% if book.cover_url %}
-                    <img src="{{ book.cover_url }}" alt="Обложка" style="max-width:100%; height:100%; object-fit:cover;">
-                {% else %}
-                    Нет обложки
-                {% endif %}
-            </div>
-            
-            {% if book.description %}
-                <p>{{ book.description }}</p>
-            {% endif %}
-            
-            <a href="/">← Назад</a>
-        </div>
     </div>
     
-    <div class="footer">
-        <div class="container">
-            Библиотека &copy; 2024
+    <div class="book-info">
+        <h1 class="book-detail-title">{{ book.title }}</h1>
+        
+        <div class="book-meta">
+            <p><strong>✍️ Автор:</strong> 
+                <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
+                    {% if book.author.avatar_url %}
+                        <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
+                             style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; margin-right: 8px;">
+                    {% endif %}
+                    {{ book.author.name }}
+                </a>
+            </p>
+            <p><strong>📅 Год издания:</strong> {{ book.year }}</p>
+            <p><strong>📝 Добавлено:</strong> {{ book.created_at|date:"d.m.Y" }}</p>
+        </div>
+        
+        {% if book.description %}
+            <div class="book-description">
+                <h3>📋 Описание:</h3>
+                <p>{{ book.description|linebreaks }}</p>
+            </div>
+        {% endif %}
+        
+        <div class="book-actions">
+            <button class="btn btn-read">📖 Начать читать</button>
+            <a href="{% url 'book_list' %}">
+                <button class="btn btn-back">← Назад к списку</button>
+            </a>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

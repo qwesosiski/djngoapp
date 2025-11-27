@@ -1,0 +1,35 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Библиотека{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>📚 Библиотека</h1>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <div class="container">
+            <a href="/">🏠 Главная</a>
+            <a href="/books/">📖 Все книги</a>
+            <a href="/authors/">✍️ Все авторы</a>
+            <a href="/admin/">⚙️ Админка</a>
+        </div>
+    </div>
+    
+    <div class="main container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            Библиотека &copy; 2024
+        </div>
+    </div>
+</body>
+</html>

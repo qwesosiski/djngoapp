@@ -1,338 +1,102 @@
 <!-- books.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Библиотека</title>
-    <style>
-        body { 
-            margin:0; 
-            padding:0; 
-            background:#1a1a1a; 
-            color:#e0e0e0; 
-            font-family:Arial, sans-serif;
-            line-height: 1.5;
-        }
-        .header { 
-            background:#5d4037; 
-            padding:20px 0; 
-            color:white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .container { 
-            width:90%; 
-            max-width: 1200px;
-            margin:0 auto; 
-        }
-        .nav { 
-            background:#2d2d2d; 
-            padding:12px 0;
-            border-bottom: 1px solid #444;
-        }
-        .nav a { 
-            color:#e0e0e0; 
-            text-decoration:none; 
-            margin-right:25px;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background 0.3s;
-        }
-        .nav a:hover {
-            background: #444;
-        }
-        .main { 
-            padding:30px 0; 
-            min-height: 70vh;
-        }
-        .books { 
-            display:grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap:25px; 
-        }
-        .book { 
-            background:#2d2d2d; 
-            padding:20px; 
-            border-radius:8px;
-            text-align:center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #444;
-        }
-        .book:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .book-cover { 
-            height:200px; 
-            background:#3d3d3d; 
-            margin-bottom:15px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 4px;
-            border: 1px solid #555;
-        }
-        .no-cover { 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 14px;
-        }
-        .book h3 {
-            color: #ffab91;
-            margin: 10px 0;
-            font-size: 1.2em;
-        }
-        .book p {
-            margin: 8px 0;
-            color: #b0b0b0;
-        }
-        .footer { 
-            background:#2d2d2d; 
-            color:#b0b0b0; 
-            padding:25px 0; 
-            margin-top:50px; 
-            text-align:center;
-            border-top: 1px solid #444;
-        }
-        .btn { 
-            padding:8px 16px; 
-            border:none; 
-            border-radius:4px; 
-            cursor:pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn-read { 
-            background:#5d4037; 
-            color:white;
-            margin-top: 10px;
-        }
-        .btn-read:hover {
-            background:#6d4c41;
-        }
-        .filters-container {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .filter-label {
-            color: #b0b0b0;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        .filter-select,
-        .search-form input { 
-            padding:10px 15px; 
-            border: 1px solid #444;
-            border-radius: 4px;
-            background: #2d2d2d;
-            color: #e0e0e0;
-            font-size: 14px;
-        }
-        .search-form input { 
-            width:300px; 
-        }
-        .filter-select {
-            width: 200px;
-        }
-        .filter-select:focus,
-        .search-form input:focus {
-            outline: none;
-            border-color: #5d4037;
-        }
-        .search-form button { 
-            padding:10px 20px; 
-            background:#5d4037; 
-            color:white; 
-            border:none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-            align-self: flex-end;
-            height: 42px;
-        }
-        .search-form button:hover {
-            background:#6d4c41;
-        }
-        .search-form a {
-            color: #ffab91;
-            text-decoration: none;
-            margin-left: 10px;
-            padding: 10px 15px;
-            background: #444;
-            border-radius: 4px;
-            transition: background 0.3s;
-            align-self: flex-end;
-            height: 42px;
-            display: flex;
-            align-items: center;
-        }
-        .search-form a:hover {
-            background: #555;
-        }
-        .filters-info {
-            margin: 15px 0;
-            padding: 10px 15px;
-            background: #3d3d3d;
-            border-radius: 4px;
-            border-left: 4px solid #5d4037;
-        }
-        .filters-info span {
-            color: #ffab91;
-            font-weight: bold;
-        }
-        .sort-indicator {
-            color: #ffab91;
-            font-size: 14px;
-            margin-left: 5px;
-        }
-        h2 {
-            color: #ffab91;
-            border-bottom: 2px solid #5d4037;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .no-books {
-            text-align: center;
-            color: #888;
-            font-size: 18px;
-            padding: 40px;
-            background: #2d2d2d;
-            border-radius: 8px;
-            border: 1px solid #444;
-        }
-        .search-form {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="container">
-            <h1>📚 Библиотека</h1>
-        </div>
+{% extends 'base.html' %}
+
+{% block title %}Книги - Библиотека{% endblock %}
+
+{% block content %}
+<form method="get" class="search-form">
+    <div class="filter-group">
+        <div class="filter-label">🔍 Поиск</div>
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Название или автор...">
     </div>
     
-    <div class="nav">
-        <div class="container">
-            <a href="/">🏠 Главная</a>
-            <a href="/books/">📖 Все книги</a>
-            <a href="/authors/">✍️ Все авторы</a>
-            <a href="/admin/">⚙️ Админка</a>
-        </div>
+    <div class="filter-group">
+        <div class="filter-label">📅 Год издания</div>
+        <select name="year" class="filter-select">
+            <option value="">Все годы</option>
+            {% for year in all_years %}
+                <option value="{{ year }}" {% if year_filter == year|stringformat:"i" %}selected{% endif %}>
+                    {{ year }}
+                </option>
+            {% endfor %}
+        </select>
     </div>
     
-    <div class="main container">
-        <form method="get" class="search-form">
-            <div class="filter-group">
-                <div class="filter-label">🔍 Поиск</div>
-                <input type="text" name="search" value="{{ search_query }}" placeholder="Название или автор...">
-            </div>
-            
-            <div class="filter-group">
-                <div class="filter-label">📅 Год издания</div>
-                <select name="year" class="filter-select">
-                    <option value="">Все годы</option>
-                    {% for year in all_years %}
-                        <option value="{{ year }}" {% if year_filter == year|stringformat:"i" %}selected{% endif %}>
-                            {{ year }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <div class="filter-label">🔄 Сортировка</div>
-                <select name="sort" class="filter-select">
-                    <option value="-year" {% if sort_order == '-year' %}selected{% endif %}>
-                        Сначала новые 📅⬇️
-                    </option>
-                    <option value="year" {% if sort_order == 'year' %}selected{% endif %}>
-                        Сначала старые 📅⬆️
-                    </option>
-                </select>
-            </div>
-            
-            <button type="submit">🔍 Применить</button>
-            
-            {% if search_query or year_filter %}
-                <a href="{% url 'book_list' %}">❌ Сбросить</a>
+    <div class="filter-group">
+        <div class="filter-label">🔄 Сортировка</div>
+        <select name="sort" class="filter-select">
+            <option value="-year" {% if sort_order == '-year' %}selected{% endif %}>
+                Сначала новые 📅⬇️
+            </option>
+            <option value="year" {% if sort_order == 'year' %}selected{% endif %}>
+                Сначала старые 📅⬆️
+            </option>
+        </select>
+    </div>
+    
+    <button type="submit">🔍 Применить</button>
+    
+    {% if search_query or year_filter %}
+        <a href="{% url 'book_list' %}">❌ Сбросить</a>
+    {% endif %}
+</form>
+
+{% if search_query or year_filter %}
+    <div class="filters-info">
+        🔍 Найдено книг: <span>{{ books|length }}</span>
+        {% if search_query %} • Поиск: "<span>{{ search_query }}</span>"{% endif %}
+        {% if year_filter %} • Год: <span>{{ year_filter }}</span>{% endif %}
+        • Сортировка: 
+        <span>
+            {% if sort_order == '-year' %}
+                новые сначала 📅⬇️
+            {% else %}
+                старые сначала 📅⬆️
             {% endif %}
-        </form>
-        
-        {% if search_query or year_filter %}
-            <div class="filters-info">
-                🔍 Найдено книг: <span>{{ books|length }}</span>
-                {% if search_query %} • Поиск: "<span>{{ search_query }}</span>"{% endif %}
-                {% if year_filter %} • Год: <span>{{ year_filter }}</span>{% endif %}
-                • Сортировка: 
-                <span>
-                    {% if sort_order == '-year' %}
-                        новые сначала 📅⬇️
-                    {% else %}
-                        старые сначала 📅⬆️
-                    {% endif %}
-                </span>
-            </div>
-        {% endif %}
-        
-        <h2>📚 Книги ({{ books|length }})</h2>
-        
-        {% if books %}
-            <div class="books">
-                {% for book in books %}
-                <div class="book">
-                    <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
-                         {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
-                        {% if not book.cover_url %}
-                            📖 Нет обложки
-                        {% endif %}
-                    </div>
-                    
-                    <h3>{{ book.title }}</h3>
-                    <p>✍️ Автор: 
-                        <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
-                            {% if book.author.avatar_url %}
-                                <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
-                                     style="width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 5px;">
-                            {% endif %}
-                            {{ book.author.name }}
-                        </a>
-                    </p>
-                    <p>📅 Год: {{ book.year }}</p>
-                    {% if book.description %}
-                        <p>{{ book.description|truncatewords:15 }}</p>
-                    {% endif %}
-                    
-                    <a href="{% url 'book_detail' book.id %}">
-                        <button class="btn btn-read">📖 Читать</button>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="no-books">
-                📚 Книги не найдены
-                {% if search_query or year_filter %}
-                    <br><small>Попробуйте изменить параметры поиска</small>
+        </span>
+    </div>
+{% endif %}
+
+<h2 class="section-title">📚 Книги ({{ books|length }})</h2>
+
+{% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                 {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                {% if not book.cover_url %}
+                    📖 Нет обложки
                 {% endif %}
             </div>
+            
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="book-meta">✍️ Автор: 
+                <a href="{% url 'author_detail' book.author.id %}" style="color: #ffab91; text-decoration: none;">
+                    {% if book.author.avatar_url %}
+                        <img src="{{ book.author.avatar_url }}" alt="{{ book.author.name }}" 
+                             style="width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 5px;">
+                    {% endif %}
+                    {{ book.author.name }}
+                </a>
+            </p>
+            <p class="book-meta">📅 Год: {{ book.year }}</p>
+            {% if book.description %}
+                <p class="book-meta">{{ book.description|truncatewords:15 }}</p>
+            {% endif %}
+            
+            <a href="{% url 'book_detail' book.id %}">
+                <button class="btn btn-read">📖 Читать</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-data">
+        📚 Книги не найдены
+        {% if search_query or year_filter %}
+            <br><small>Попробуйте изменить параметры поиска</small>
         {% endif %}
     </div>
-    
-    <div class="footer">
-        <div class="container">
-            Библиотека &copy; 2024
-        </div>
-    </div>
-</body>
-</html>
+{% endif %}
+{% endblock %}

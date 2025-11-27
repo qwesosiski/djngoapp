@@ -1,275 +1,61 @@
-<!-- author_detail.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ author.name }}</title>
-    <style>
-        body { 
-            margin:0; 
-            padding:0; 
-            background:#1a1a1a; 
-            color:#e0e0e0; 
-            font-family:Arial, sans-serif;
-            line-height: 1.5;
-        }
-        .header { 
-            background:#5d4037; 
-            padding:20px 0; 
-            color:white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .container { 
-            width:90%; 
-            max-width: 1200px;
-            margin:0 auto; 
-        }
-        .nav { 
-            background:#2d2d2d; 
-            padding:12px 0;
-            border-bottom: 1px solid #444;
-        }
-        .nav a { 
-            color:#e0e0e0; 
-            text-decoration:none; 
-            margin-right:25px;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background 0.3s;
-        }
-        .nav a:hover {
-            background: #444;
-        }
-        .main { 
-            padding:30px 0; 
-            min-height: 70vh;
-        }
-        .author-header {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            background:#2d2d2d;
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            margin-bottom: 30px;
-        }
-        .author-avatar {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: #3d3d3d;
-            background-size: cover;
-            background-position: center;
-            border: 3px solid #5d4037;
-            flex-shrink: 0;
-        }
-        .no-avatar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 14px;
-            text-align: center;
-        }
-        .author-info {
-            flex: 1;
-        }
-        .author-name {
-            color: #ffab91;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-        .author-bio {
-            color: #b0b0b0;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        .books-count {
-            color: #ffab91;
-            font-size: 1.2em;
-            margin: 20px 0;
-            background: #3d3d3d;
-            padding: 10px 20px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .books-grid { 
-            display:grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap:25px; 
-        }
-        .book { 
-            background:#2d2d2d; 
-            padding:20px; 
-            border-radius:8px;
-            text-align:center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #444;
-        }
-        .book:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .book-cover { 
-            height:200px; 
-            background:#3d3d3d; 
-            margin-bottom:15px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 4px;
-            border: 1px solid #555;
-        }
-        .no-cover { 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 14px;
-        }
-        .book h3 {
-            color: #ffab91;
-            margin: 10px 0;
-            font-size: 1.2em;
-        }
-        .book p {
-            margin: 8px 0;
-            color: #b0b0b0;
-        }
-        .btn { 
-            padding:8px 16px; 
-            border:none; 
-            border-radius:4px; 
-            cursor:pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn-read { 
-            background:#5d4037; 
-            color:white;
-            margin-top: 10px;
-        }
-        .btn-read:hover {
-            background:#6d4c41;
-        }
-        .btn-back {
-            background:#444;
-            color:white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .btn-back:hover {
-            background:#555;
-        }
-        .footer { 
-            background:#2d2d2d; 
-            color:#b0b0b0; 
-            padding:25px 0; 
-            margin-top:50px; 
-            text-align:center;
-            border-top: 1px solid #444;
-        }
-        .no-books {
-            text-align: center;
-            color: #888;
-            font-size: 18px;
-            padding: 40px;
-            background: #2d2d2d;
-            border-radius: 8px;
-            border: 1px solid #444;
-        }
-        @media (max-width: 768px) {
-            .author-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .author-avatar {
-                width: 150px;
-                height: 150px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="container">
-            <h1>📚 Библиотека</h1>
-        </div>
+{% extends 'base.html' %}
+
+{% block title %}{{ author.name }} - Библиотека{% endblock %}
+
+{% block content %}
+<div class="author-header">
+    <div class="author-avatar author-detail-avatar {% if not author.avatar_url %}no-avatar{% endif %}" 
+         {% if author.avatar_url %}style="background-image: url('{{ author.avatar_url }}')"{% endif %}>
+        {% if not author.avatar_url %}
+            👤<br>Нет аватара
+        {% endif %}
     </div>
     
-    <div class="nav">
-        <div class="container">
-            <a href="/">🏠 Главная</a>
-            <a href="/books/">📖 Все книги</a>
-            <a href="/authors/">✍️ Все авторы</a>
-            <a href="/admin/">⚙️ Админка</a>
+    <div class="author-info">
+        <h1 class="author-detail-name">{{ author.name }}</h1>
+        
+        {% if author.bio %}
+            <div class="author-detail-bio">
+                {{ author.bio|linebreaks }}
+            </div>
+        {% endif %}
+        
+        <div class="books-count">
+            📚 Книг в библиотеке: {{ books|length }}
         </div>
     </div>
-    
-    <div class="main container">
-        <div class="author-header">
-            <div class="author-avatar {% if not author.avatar_url %}no-avatar{% endif %}" 
-                 {% if author.avatar_url %}style="background-image: url('{{ author.avatar_url }}')"{% endif %}>
-                {% if not author.avatar_url %}
-                    👤<br>Нет аватара
+</div>
+
+<h2 class="section-title">📖 Книги автора</h2>
+
+{% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
+                 {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
+                {% if not book.cover_url %}
+                    📖 Нет обложки
                 {% endif %}
             </div>
             
-            <div class="author-info">
-                <h1 class="author-name">{{ author.name }}</h1>
-                
-                {% if author.bio %}
-                    <div class="author-bio">
-                        {{ author.bio|linebreaks }}
-                    </div>
-                {% endif %}
-                
-                <div class="books-count">
-                    📚 Книг в библиотеке: {{ books|length }}
-                </div>
-            </div>
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="book-meta">📅 Год: {{ book.year }}</p>
+            {% if book.description %}
+                <p class="book-meta">{{ book.description|truncatewords:10 }}</p>
+            {% endif %}
+            
+            <a href="{% url 'book_detail' book.id %}">
+                <button class="btn btn-read">📖 Подробнее</button>
+            </a>
         </div>
-
-        <h2>📖 Книги автора</h2>
-        
-        {% if books %}
-            <div class="books-grid">
-                {% for book in books %}
-                <div class="book">
-                    <div class="book-cover {% if not book.cover_url %}no-cover{% endif %}" 
-                         {% if book.cover_url %}style="background-image: url('{{ book.cover_url }}')"{% endif %}>
-                        {% if not book.cover_url %}
-                            📖 Нет обложки
-                        {% endif %}
-                    </div>
-                    
-                    <h3>{{ book.title }}</h3>
-                    <p>📅 Год: {{ book.year }}</p>
-                    {% if book.description %}
-                        <p>{{ book.description|truncatewords:10 }}</p>
-                    {% endif %}
-                    
-                    <a href="{% url 'book_detail' book.id %}">
-                        <button class="btn btn-read">📖 Подробнее</button>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="no-books">
-                📚 У этого автора пока нет книг в библиотеке
-            </div>
-        {% endif %}
-
-        <a href="{% url 'book_list' %}" class="btn-back">← Назад к списку книг</a>
+        {% endfor %}
     </div>
-    
-    <div class="footer">
-        <div class="container">
-            Библиотека &copy; 2024
-        </div>
+{% else %}
+    <div class="no-data">
+        📚 У этого автора пока нет книг в библиотеке
     </div>
-</body>
-</html>
+{% endif %}
+
+<a href="{% url 'book_list' %}" class="btn btn-back">← Назад к списку книг</a>
+{% endblock %}
