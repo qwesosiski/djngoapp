@@ -1,0 +1,126 @@
+<!-- templates/registration.html -->
+{% extends 'base.html' %}
+
+{% block title %}Регистрация - Библиотека{% endblock %}
+
+{% block content %}
+<div class="register-container" style="max-width: 500px; margin: 40px auto;">
+    <div class="register-header" style="text-align: center; margin-bottom: 30px;">
+        <h1 class="section-title" style="border-bottom: none;">📝 Регистрация</h1>
+        <p style="color: #b0b0b0;">Создайте аккаунт чтобы добавлять отзывы и избранное</p>
+    </div>
+
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div style="background: #ff6b6b; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <strong style="display: block; margin-bottom: 10px;">❌ Ошибки при регистрации:</strong>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div style="margin-left: 10px; margin-bottom: 5px;">• {{ error }}</div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div style="margin-left: 10px; margin-bottom: 5px;">• {{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="id_username" class="filter-label" style="display: block; margin-bottom: 8px;">
+                👤 Имя пользователя
+            </label>
+            <input type="text" name="username" id="id_username" class="filter-select" 
+                   placeholder="Введите имя пользователя" 
+                   style="width: 100%; padding: 12px; background: #3d3d3d; border: 1px solid #444; color: white; border-radius: 4px;"
+                   value="{{ form.username.value|default:'' }}"
+                   required>
+            <small style="color: #888; display: block; margin-top: 5px; font-size: 0.85em;">
+                Только буквы, цифры и символы @/./+/-/_
+            </small>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="id_password1" class="filter-label" style="display: block; margin-bottom: 8px;">
+                🔒 Пароль
+            </label>
+            <input type="password" name="password1" id="id_password1" class="filter-select" 
+                   placeholder="Введите пароль" 
+                   style="width: 100%; padding: 12px; background: #3d3d3d; border: 1px solid #444; color: white; border-radius: 4px;"
+                   required>
+            <small style="color: #888; display: block; margin-top: 5px; font-size: 0.85em;">
+                Минимум 8 символов. Не только цифры.
+            </small>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="id_password2" class="filter-label" style="display: block; margin-bottom: 8px;">
+                🔒 Подтверждение пароля
+            </label>
+            <input type="password" name="password2" id="id_password2" class="filter-select" 
+                   placeholder="Повторите пароль" 
+                   style="width: 100%; padding: 12px; background: #3d3d3d; border: 1px solid #444; color: white; border-radius: 4px;"
+                   required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <button type="submit" class="btn btn-read" 
+                    style="width: 100%; padding: 14px; font-size: 1.1em; background: #5d4037; border: none; color: white; border-radius: 4px; cursor: pointer;">
+                Зарегистрироваться
+            </button>
+        </div>
+
+        <div class="form-group" style="text-align: center; margin-top: 20px;">
+            <p style="color: #b0b0b0;">
+                Уже есть аккаунт? 
+                <a href="{% url 'login' %}" style="color: #ffab91; text-decoration: none; font-weight: bold;">
+                    Войти
+                </a>
+            </p>
+        </div>
+    </form>
+</div>
+
+<script>
+// Добавим простую валидацию на клиенте
+document.querySelector('form').addEventListener('submit', function(e) {
+    const password1 = document.getElementById('id_password1').value;
+    const password2 = document.getElementById('id_password2').value;
+    
+    if (password1 !== password2) {
+        e.preventDefault();
+        alert('Пароли не совпадают!');
+    }
+    
+    if (password1.length < 8) {
+        e.preventDefault();
+        alert('Пароль должен быть минимум 8 символов!');
+    }
+});
+</script>
+
+<style>
+/* Дополнительные стили для страницы регистрации */
+.register-container {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #ffab91 !important;
+    box-shadow: 0 0 5px rgba(255, 171, 145, 0.3);
+}
+
+.btn-read:hover {
+    background: #6d4c41 !important;
+    transform: translateY(-2px);
+    transition: all 0.3s;
+}
+</style>
+{% endblock %}

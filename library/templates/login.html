@@ -1,0 +1,48 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Вход - Библиотека{% endblock %}
+
+{% block content %}
+<div class="register-container" style="max-width: 400px; margin: 0 auto;">
+    <div class="register-header" style="text-align: center; margin-bottom: 30px;">
+        <h1 class="section-title" style="border-bottom: none;">🔐 Вход</h1>
+        <p style="color: #b0b0b0;">Войдите чтобы использовать все возможности</p>
+    </div>
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div style="background: #ff6b6b; color: white; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+                Неправильное имя пользователя или пароль
+            </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="id_username" class="filter-label">👤 Имя пользователя</label>
+            <input type="text" name="username" id="id_username" class="filter-select" 
+                   placeholder="Введите имя пользователя" style="width: 100%;" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_password" class="filter-label">🔒 Пароль</label>
+            <input type="password" name="password" id="id_password" class="filter-select" 
+                   placeholder="Введите пароль" style="width: 100%;" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-read" style="width: 100%; padding: 12px; font-size: 1.1em;">
+                Войти
+            </button>
+        </div>
+
+        <div class="form-group" style="text-align: center;">
+            <p style="color: #b0b0b0;">
+                Нет аккаунта? 
+                <a href="{% url 'register' %}" style="color: #ffab91; text-decoration: none;">Зарегистрироваться</a>
+            </p>
+        </div>
+    </form>
+</div>
+{% endblock %}
