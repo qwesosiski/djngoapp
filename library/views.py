@@ -8,6 +8,12 @@ from .models import Book, Author, Genre, Review, Favorite
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.contrib.auth import logout
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 class RegisterView(CreateView):
     form_class = UserCreationForm

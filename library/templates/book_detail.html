@@ -1,3 +1,4 @@
+<!-- book_detail.html -->
 {% extends 'base.html' %}
 
 {% block title %}{{ book.title }} - Библиотека{% endblock %}
@@ -54,20 +55,20 @@
             </div>
         {% endif %}
         
-        <div class="book-actions">
+        <div class="book-actions" style="display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap;">
             {% if book.file_url %}
-                <a href="{{ book.file_url }}" target="_blank" class="btn btn-read">📖 Читать онлайн</a>
+                <a href="{{ book.file_url }}" target="_blank" class="btn btn-read" style="padding: 12px 30px; font-size: 1.1em;">📖 Читать онлайн</a>
             {% else %}
-                <button class="btn btn-read" disabled>📖 Читать (файл не доступен)</button>
+                <button class="btn btn-read" disabled style="padding: 12px 30px; font-size: 1.1em; opacity: 0.6;">📖 Читать (файл не доступен)</button>
             {% endif %}
-            <a href="{% url 'book_list' %}">
-                <button class="btn btn-back">← Назад к списку</button>
+            
+            <a href="{% url 'book_list' %}" class="btn btn-back" style="padding: 12px 30px; font-size: 1.1em; background: #444; color: white; text-decoration: none; border-radius: 4px;">
+                ← Назад к списку
             </a>
         </div>
     </div>
 </div>
 
-<!-- Отзывы -->
 <div class="reviews-section">
     <h3 class="section-title">💬 Отзывы ({{ reviews|length }})</h3>
     
@@ -114,7 +115,47 @@
         </form>
     </div>
     {% else %}
-        <p>Чтобы оставить отзыв, <a href="{% url 'admin:login' %}">войдите в систему</a></p>
+        <p>Чтобы оставить отзыв, <a href="{% url 'login' %}">войдите в систему</a></p>
     {% endif %}
 </div>
+
+<style>
+.book-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.book-actions .btn-read,
+.book-actions .btn-back {
+    padding: 12px 30px;
+    font-size: 1.1em;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.book-actions .btn-read {
+    background: #5d4037;
+    color: white;
+    border: none;
+}
+
+.book-actions .btn-read:hover {
+    background: #6d4c41;
+    transform: translateY(-2px);
+}
+
+.book-actions .btn-back {
+    background: #444;
+    color: white;
+}
+
+.book-actions .btn-back:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+</style>
 {% endblock %}
