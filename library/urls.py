@@ -14,4 +14,5 @@ urlpatterns = [
     path('book/<int:book_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('logout/', views.logout_view, name='logout'),
+    path('book/<int:book_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
 ]

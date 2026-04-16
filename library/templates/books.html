@@ -4,6 +4,14 @@
 {% block title %}Книги - Библиотека{% endblock %}
 
 {% block content %}
+
+<!-- Живой поиск -->
+<div class="search-section" style="margin-bottom: 20px;">
+    <input type="text" id="liveSearchInput" placeholder="🔍 Быстрый поиск книг..." 
+           style="width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 8px; font-size: 16px;">
+    <div id="searchResult" style="margin-top: 10px; color: #ffab91; font-size: 14px;"></div>
+</div>
+
 <form method="get" class="search-form">
     <div class="filter-group">
         <div class="filter-label">🔍 Поиск</div>
@@ -72,7 +80,6 @@
             
             <h3 class="book-title">{{ book.title }}</h3>
             
-            <!-- Автор с защитой от ошибок -->
             <p class="book-meta">
                 ✍️ Автор: 
                 {% if book.author and book.author.id %}
@@ -90,7 +97,6 @@
             
             <p class="book-meta">📅 Год: {{ book.year }}</p>
             
-            <!-- Жанры в карточке книги -->
             {% if book.genres.all %}
                 <p class="book-meta">
                     🏷️ 
@@ -111,9 +117,18 @@
                 <p class="book-meta">📄 Страниц: {{ book.pages }}</p>
             {% endif %}
             
-            <a href="{% url 'book_detail' book.id %}">
-                <button class="btn btn-read">📖 Читать</button>
-            </a>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                <a href="{% url 'book_detail' book.id %}">
+                    <button class="btn btn-read">📖 Читать</button>
+                </a>
+                
+                <!-- Кнопка избранного -->
+                {% if user.is_authenticated %}
+                    <button onclick="toggleFavorite({{ book.id }}, this)" class="favorite-btn" style="padding: 8px 16px; background: #444; color: #e0e0e0; border: none; border-radius: 4px; cursor: pointer;">
+                        🤍 В избранное
+                    </button>
+                {% endif %}
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -127,4 +142,52 @@
         {% endif %}
     </div>
 {% endif %}
+
+<script>
+// Живой поиск
+const liveSearchInput = document.getElementById('liveSearchInput');
+if (liveSearchInput) {
+    liveSearchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        const books = document.querySelectorAll('.book-card');
+        let visibleCount = 0;
+        
+        books.forEach(book => {
+            const title = book.querySelector('h3')?.textContent.toLowerCase() || '';
+            const author = book.querySelector('.book-meta')?.textContent.toLowerCase() || '';
+            const year = book.querySelectorAll('.book-meta')[1]?.textContent.toLowerCase() || '';
+            
+            if (title.includes(query) || author.includes(query) || year.includes(query)) {
+                book.style.display = '';
+                visibleCount++;
+            } else {
+                book.style.display = 'none';
+            }
+        });
+        
+        const resultDiv = document.getElementById('searchResult');
+        if (resultDiv) {
+            if (query) {
+                resultDiv.innerHTML = `🔍 Найдено книг: ${visibleCount}`;
+            } else {
+                resultDiv.innerHTML = '';
+            }
+        }
+    });
+}
+</script>
+
+<style>
+.favorite-btn:hover {
+    background: #ffab91 !important;
+    color: #1a1a1a !important;
+    transform: translateY(-2px);
+    transition: all 0.3s;
+}
+#liveSearchInput:focus {
+    outline: none;
+    border-color: #ffab91;
+    box-shadow: 0 0 5px rgba(255,171,145,0.3);
+}
+</style>
 {% endblock %}
